@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moodle マイコース改善デモ var.2</title>
+  <link rel="stylesheet" href="style-var2.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="label">HCI設計論 発表用プロトタイプ var.2</p>
+      <h1>Moodle マイコース改善デモ</h1>
+    </div>
+    <div class="mode-switch" aria-label="表示モード">
+      <button class="mode-button active" type="button" data-mode="before">改善前UI</button>
+      <button class="mode-button" type="button" data-mode="after">改善後UI</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro">
+      <h2>課題設定</h2>
+      <p>
+        長い科目一覧では、ユーザーが大量の文字列を目視で探す必要があり、注意資源と作業記憶を消費する。
+        var.2では、講義資料のHCI概念をUIの各部品に対応づけて、改善理由を説明しやすくした。
+      </p>
+    </section>
+
+    <section class="demo active" id="before-panel">
+      <div class="section-head">
+        <div>
+          <p class="label">Before</p>
+          <h2>改善前UI: 長い一覧から目視探索</h2>
+        </div>
+        <p class="note">分類・強調・状態表示が弱く、目的科目の探索がユーザー任せになる。</p>
+      </div>
+
+      <div class="moodle-frame">
+        <nav class="mock-navigation">
+          <strong>md.ku</strong>
+          <span>Home</span>
+          <span class="current">ダッシュボード</span>
+          <span>マイコース</span>
+          <span class="spacer"></span>
+          <span>検索</span>
+          <span>通知</span>
+          <span>編集モード</span>
+        </nav>
+        <div class="legacy-area">
+          <aside>
+            <strong>ナビゲーション</strong>
+            <span>ダッシュボード</span>
+            <span>サイトホーム</span>
+            <span>マイコース</span>
+          </aside>
+          <div>
+            <p class="legacy-caption">すべてのコース</p>
+            <div class="legacy-list" id="legacy-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo" id="after-panel">
+      <div class="section-head">
+        <div>
+          <p class="label">After</p>
+          <h2>改善後UI: HCI概念を反映した一覧</h2>
+        </div>
+        <p class="note">分類、再認、視覚的強調、フィードバックで探索時間を短縮する。</p>
+      </div>
+
+      <div class="dashboard">
+        <section class="hci-ribbon" aria-label="反映したHCI概念">
+          <article>
+            <strong>チャンク化</strong>
+            <span>科目を意味のまとまりで分類</span>
+          </article>
+          <article>
+            <strong>再認法</strong>
+            <span>タブとフィルターから選ぶ</span>
+          </article>
+          <article>
+            <strong>前注意的処理</strong>
+            <span>赤バッジで未提出を即発見</span>
+          </article>
+          <article>
+            <strong>フィードバック</strong>
+            <span>件数と選択状態を表示</span>
+          </article>
+        </section>
+
+        <div class="controls">
+          <label class="search">
+            <span>検索</span>
+            <input id="search-input" type="search" placeholder="例: データ可視化演習">
+          </label>
+          <label>
+            学年・学期
+            <select id="term-select">
+              <option value="all">すべて</option>
+              <option value="3年次 前期">3年次 前期</option>
+              <option value="3年次 後期">3年次 後期</option>
+              <option value="2年次 前期">2年次 前期</option>
+              <option value="2年次 後期">2年次 後期</option>
+              <option value="1年次">1年次</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="科目分類">
+          <button class="tab active" type="button" data-tab="current">今学期</button>
+          <button class="tab" type="button" data-tab="favorite">お気に入り</button>
+          <button class="tab" type="button" data-tab="todo">未提出あり</button>
+          <button class="tab" type="button" data-tab="past">過去履修</button>
+        </div>
+
+        <section class="pinned">
+          <div class="mini-head">
+            <h3>お気に入り固定</h3>
+            <span>使用頻度の高い科目を上部に固定</span>
+          </div>
+          <div class="cards compact" id="favorite-cards"></div>
+        </section>
+
+        <section class="course-results">
+          <div class="mini-head">
+            <h3 id="result-title">今学期の科目</h3>
+            <span id="result-count">0件</span>
+          </div>
+          <div class="cards" id="course-cards"></div>
+        </section>
+
+        <details class="past-box">
+          <summary>過去履修科目を折りたたむ</summary>
+          <div class="cards compact" id="past-cards"></div>
+        </details>
+      </div>
+
+      <section class="hci-map">
+        <h2>この改善で使ったHCI</h2>
+        <div class="map-grid">
+          <article>
+            <h3>チャンク化</h3>
+            <p>年度・学期・状態ごとに分け、長い一覧を意味のまとまりに変える。</p>
+          </article>
+          <article>
+            <h3>再認法</h3>
+            <p>検索だけに頼らず、タブや選択肢から目的の分類を選べる。</p>
+          </article>
+          <article>
+            <h3>ゲシュタルトの法則</h3>
+            <p>近いもの・似た見た目のものをまとまりとして見せ、一覧性を上げる。</p>
+          </article>
+          <article>
+            <h3>前注意的処理</h3>
+            <p>未提出を赤色バッジにして、読む前に重要情報へ注意を向ける。</p>
+          </article>
+          <article>
+            <h3>認知負荷の低減</h3>
+            <p>過去履修の折りたたみやお気に入り固定で、画面上の不要情報を減らす。</p>
+          </article>
+          <article>
+            <h3>フィードバック</h3>
+            <p>選択中タブ、検索件数、バッジにより、操作結果をすぐ確認できる。</p>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="points">
+      <h2>改善ポイント</h2>
+      <ul>
+        <li>年度・学期ごとの分類により、情報探索コストを削減</li>
+        <li>お気に入り機能により、使用頻度の高い科目へ素早くアクセス可能</li>
+        <li>未提出バッジにより、重要な科目を視覚的に強調</li>
+        <li>過去履修科目の折りたたみにより、画面の情報量を削減</li>
+        <li>検索機能により、目的科目への到達時間を短縮</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script-var2.js"></script>
+</body>
+</html>
