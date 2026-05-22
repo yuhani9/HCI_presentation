@@ -116,7 +116,7 @@ function makeCard(course) {
 
 function filterCourseList(list) {
   return list
-    .filter(course => state.term === "all" || course.category === state.term)
+    .filter(course => state.term === "all" || course.code.startsWith(state.term))
     .filter(course => {
       const haystack = `${course.title} ${course.code} ${course.category}`.toLowerCase();
       return haystack.includes(state.search.toLowerCase());
