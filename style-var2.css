@@ -278,6 +278,13 @@ h1 {
   margin-bottom: 16px;
 }
 
+.filter-hint {
+  margin: -4px 0 14px;
+  color: var(--gray-500);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
 .tab {
   background: #ffffff;
   border-color: var(--gray-200);
